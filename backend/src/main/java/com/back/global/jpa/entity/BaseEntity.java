@@ -14,19 +14,29 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Getter
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    @Setter(AccessLevel.PROTECTED)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+	@Setter(AccessLevel.PROTECTED)
+	private Long id;
 
-    @CreatedDate
-    private LocalDateTime createDate;
+	@CreatedDate
+	private LocalDateTime createDate;
 
-    @LastModifiedDate
-    private LocalDateTime modifyDate;
+	@LastModifiedDate
+	private LocalDateTime modifyDate;
 
+	public Long getId() {
+		return id;
+	}
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public LocalDateTime getModifyDate() {
+		return modifyDate;
+	}
 }

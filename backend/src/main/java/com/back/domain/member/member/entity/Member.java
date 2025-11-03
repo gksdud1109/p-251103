@@ -14,57 +14,75 @@ import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
-@Getter
 @Entity
 public class Member extends BaseEntity {
 
-    @Column(unique = true)
-    private String username;
-    private String password;
-    private String nickname;
-    @Column(unique = true)
-    private String apiKey;
-    private String profileImgUrl;
+	@Column(unique = true)
+	private String username;
+	private String password;
+	private String nickname;
+	@Column(unique = true)
+	private String apiKey;
+	private String profileImgUrl;
 
-    public Member(String username, String password, String nickname, String profileImgUrl) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-        this.apiKey = UUID.randomUUID().toString();
-    }
+	public Member(String username, String password, String nickname, String profileImgUrl) {
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.apiKey = UUID.randomUUID().toString();
+	}
 
-    public Member(Long id, String username, String nickname) {
-        this.setId(id);
-        this.username = username;
-        this.nickname = nickname;
-    }
+	public Member(Long id, String username, String nickname) {
+		this.setId(id);
+		this.username = username;
+		this.nickname = nickname;
+	}
 
-    public String getName() {
-        return nickname;
-    }
+	public String getName() {
+		return nickname;
+	}
 
-    public void updateApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
+	public void updateApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
 
-    public boolean isAdmin() {
-        return "admin".equals(this.username);
-    }
+	public boolean isAdmin() {
+		return "admin".equals(this.username);
+	}
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if(isAdmin()) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
+		if(isAdmin()) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
 
-        return authorities;
-    }
+		return authorities;
+	}
 
-    public void update(String nickname, String profileImgUrl) {
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-    }
+	public void update(String nickname, String profileImgUrl) {
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public String getProfileImgUrl() {
+		return profileImgUrl;
+	}
 }
-
