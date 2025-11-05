@@ -33,10 +33,10 @@ class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException::class)
     @ResponseBody
     fun handleException(e: HttpMessageNotReadableException?): RsData<Void?> =
-        RsData<Void?>("400-2", "잘못된 형식의 요청 데이터입니다.")
+        RsData("400-2", "잘못된 형식의 요청 데이터입니다.")
 
     @ExceptionHandler(ServiceException::class)
     @ResponseBody
     fun handleException(e: ServiceException): RsData<Void?> =
-        RsData(e.getResultCode(), e.getMsg())
+        RsData(e.resultCode, e.msg)
 }

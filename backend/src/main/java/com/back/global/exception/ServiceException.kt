@@ -1,27 +1,11 @@
-package com.back.global.exception;
+package com.back.global.exception
 
-import com.back.global.rsData.RsData;
+import com.back.global.rsData.RsData
 
-public class ServiceException extends RuntimeException {
-
-    private String resultCode;
-    private String msg;
-
-    public ServiceException(String resultCode, String msg) {
-        super("%s : %s".formatted(resultCode, msg));
-        this.resultCode = resultCode;
-        this.msg = msg;
-    }
-
-    public String getResultCode() {
-        return resultCode;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public RsData getRsData() {
-        return new RsData(resultCode, msg);
-    }
+class ServiceException(
+    val resultCode: String,
+    val msg: String?
+) : RuntimeException("${resultCode} : ${msg}") {
+    val rsData: RsData<*>
+        get() = RsData<Any?>(resultCode, msg)
 }
