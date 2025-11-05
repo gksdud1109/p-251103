@@ -100,7 +100,7 @@ public class ApiV1PostController {
 
         return new RsData<>(
                 "201-1",
-                "%d번 게시물이 생성되었습니다.".formatted(post.getId()),
+                "%d번 게시물이 생성되었습니다.".formatted(post.id),
                 new PostWriteResBody(
                         new PostDto(post)
                 )

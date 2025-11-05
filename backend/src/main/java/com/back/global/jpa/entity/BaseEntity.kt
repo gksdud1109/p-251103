@@ -1,42 +1,37 @@
-package com.back.global.jpa.entity;
+package com.back.global.jpa.entity
 
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
+import jakarta.persistence.*
+import lombok.AccessLevel
+import lombok.Setter
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDateTime
+import java.util.Objects
 
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity {
+@EntityListeners(AuditingEntityListener::class)
+abstract class BaseEntity(
+    @JvmField
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
 
-	@Id
-	@GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-	@Setter(AccessLevel.PROTECTED)
-	private Long id;
+) {
+    @CreatedDate
+    lateinit var createDate: LocalDateTime
 
-	@CreatedDate
-	private LocalDateTime createDate;
+    @LastModifiedDate
+    lateinit var  modifyDate: LocalDateTime
 
-	@LastModifiedDate
-	private LocalDateTime modifyDate;
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that = other as BaseEntity
+        return id == that.id
+    }
 
-	public Long getId() {
-		return id;
-	}
-
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public LocalDateTime getModifyDate() {
-		return modifyDate;
-	}
+    override fun hashCode(): Int {
+        return Objects.hashCode(id)
+    }
 }

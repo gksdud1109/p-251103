@@ -100,7 +100,7 @@ public class ApiV1CommentController {
 
         return new RsData<>(
                 "201-1",
-                "%d번 댓글이 생성되었습니다.".formatted(comment.getId()),
+                "%d번 댓글이 생성되었습니다.".formatted(comment.id),
                 new CommentWriteResBody(
                         new  CommentDto(comment)
                 )

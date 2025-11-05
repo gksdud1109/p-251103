@@ -1,88 +1,67 @@
-package com.back.domain.member.member.entity;
+package com.back.domain.member.member.entity
 
-import com.back.global.jpa.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import com.back.global.jpa.entity.BaseEntity
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import lombok.NoArgsConstructor
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.*
 
 @NoArgsConstructor
 @Entity
-public class Member extends BaseEntity {
+class Member(
+    id: Long = 0,
+    @Column(unique = true)
+    var username: String,
+    var password: String,
+    var nickname: String,
+    @Column(unique = true)
+    var apiKey: String,
+    var profileImgUrl: String?
+) : BaseEntity(id) {
 
-	@Column(unique = true)
-	private String username;
-	private String password;
-	private String nickname;
-	@Column(unique = true)
-	private String apiKey;
-	private String profileImgUrl;
+    constructor(username: String, password: String, nickname: String, profileImgUrl: String?) : this(
+        0,
+        username,
+        password,
+        nickname,
+        UUID.randomUUID().toString(),
+        profileImgUrl
+    )
 
-	public Member(String username, String password, String nickname, String profileImgUrl) {
-		this.username = username;
-		this.password = password;
-		this.nickname = nickname;
-		this.profileImgUrl = profileImgUrl;
-		this.apiKey = UUID.randomUUID().toString();
-	}
+    constructor(id: Long, username: String, nickname: String) : this(
+        id,
+        username,
+        "",
+        nickname,
+        "",
+        null
+    )
 
-	public Member(Long id, String username, String nickname) {
-		this.setId(id);
-		this.username = username;
-		this.nickname = nickname;
-	}
+    val name: String
+        get() = this.nickname
 
-	public String getName() {
-		return nickname;
-	}
+    fun updateApiKey(apiKey: String) {
+        this.apiKey = apiKey
+    }
 
-	public void updateApiKey(String apiKey) {
-		this.apiKey = apiKey;
-	}
+    val isAdmin: Boolean
+        get() = "admin" == this.username
 
-	public boolean isAdmin() {
-		return "admin".equals(this.username);
-	}
+    val authorities: Collection<GrantedAuthority>
+        get() {
+            val authorities: MutableList<GrantedAuthority> = ArrayList()
 
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> authorities = new ArrayList<>();
+            if (isAdmin) {
+                authorities.add(SimpleGrantedAuthority("ROLE_ADMIN"))
+            }
 
-		if(isAdmin()) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		}
+            return authorities
+        }
 
-		return authorities;
-	}
-
-	public void update(String nickname, String profileImgUrl) {
-		this.nickname = nickname;
-		this.profileImgUrl = profileImgUrl;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public String getApiKey() {
-		return apiKey;
-	}
-
-	public String getProfileImgUrl() {
-		return profileImgUrl;
-	}
+    fun update(nickname: String, profileImgUrl: String?) {
+        this.nickname = nickname
+        this.profileImgUrl = profileImgUrl
+    }
 }

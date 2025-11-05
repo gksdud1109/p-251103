@@ -136,9 +136,11 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.msg").value("%s님 환영합니다.".formatted(username)))
                 .andExpect(jsonPath("$.data.apiKey").exists())
                 .andExpect(jsonPath("$.data.accessToken").isNotEmpty())
-                .andExpect(jsonPath("$.data.memberDto.id").value(member.getId()))
-                .andExpect(jsonPath("$.data.memberDto.createDate").value(Matchers.startsWith(member.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.memberDto.modifyDate").value(Matchers.startsWith(member.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.memberDto.id").value(member.id))
+                .andExpect(jsonPath("$.data.memberDto.createDate").value(Matchers.startsWith(
+					member.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.memberDto.modifyDate").value(Matchers.startsWith(
+					member.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.memberDto.name").value(member.getName()))
                 .andExpect(jsonPath("$.data.memberDto.isAdmin").value(member.isAdmin()));
 
@@ -214,9 +216,11 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.resultCode").value("200-1"))
                 .andExpect(jsonPath("$.msg").value("OK"))
                 .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.memberDto.id").value(member.getId()))
-                .andExpect(jsonPath("$.data.memberDto.createDate").value(Matchers.startsWith(member.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.memberDto.modifyDate").value(Matchers.startsWith(member.getCreateDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.memberDto.id").value(member.id))
+                .andExpect(jsonPath("$.data.memberDto.createDate").value(Matchers.startsWith(
+					member.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.memberDto.modifyDate").value(Matchers.startsWith(
+					member.createDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.memberDto.name").value(member.getName()))
                 .andExpect(jsonPath("$.data.memberDto.isAdmin").value(member.isAdmin()));
     }

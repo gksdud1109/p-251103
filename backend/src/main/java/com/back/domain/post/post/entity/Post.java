@@ -55,18 +55,18 @@ public class Post extends BaseEntity {
 
 	public Optional<Comment> findCommentById(Long commentId) {
 		return comments.stream()
-			.filter(c -> c.getId().equals(commentId))
+			.filter(c -> c.id  == commentId)
 			.findFirst();
 	}
 
 	public void checkActorModify(Member actor) {
-		if(!this.author.getId().equals(actor.getId())) {
+		if(!this.author.equals(actor)) {
 			throw new ServiceException("403-1", "수정 권한이 없습니다.");
 		}
 	}
 
 	public void checkActorDelete(Member actor) {
-		if(!this.author.getId().equals(actor.getId())) {
+		if(!this.author.equals(actor)) {
 			throw new ServiceException("403-2", "삭제 권한이 없습니다.");
 		}
 

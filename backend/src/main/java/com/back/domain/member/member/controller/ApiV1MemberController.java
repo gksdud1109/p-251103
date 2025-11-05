@@ -123,7 +123,7 @@ public class ApiV1MemberController {
     @GetMapping("/me")
     public RsData<MemberDto> me() {
 
-        Member author = memberService.findById(rq.getActor().getId()).get();
+		Member author = memberService.findById(rq.getActor().id).get();
 
         return new RsData(
                 "200-1",

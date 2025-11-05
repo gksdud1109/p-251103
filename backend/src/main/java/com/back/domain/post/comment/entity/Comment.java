@@ -35,13 +35,13 @@ public class Comment extends BaseEntity {
 	}
 
 	public void checkActorModify(Member actor) {
-		if(!this.author.getId().equals(actor.getId())) {
+		if(!this.author.equals(actor)) {
 			throw new ServiceException("403-1", "댓글 수정 권한이 없습니다.");
 		}
 	}
 
 	public void checkActorDelete(Member actor) {
-		if(!this.author.getId().equals(actor.getId())) {
+		if(!this.author.equals(actor)) {
 			throw new ServiceException("403-2", "댓글 삭제 권한이 없습니다.");
 		}
 	}

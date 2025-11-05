@@ -108,8 +108,10 @@ public class ApiV1PostControllerTest {
                 .andExpect(handler().methodName("getItem"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.createDate").value(matchesPattern(post.getCreateDate().toString().replaceAll("0+$", "") + ".*")))
-                .andExpect(jsonPath("$.modifyDate").value(matchesPattern(post.getModifyDate().toString().replaceAll("0+$", "") + ".*")))
+                .andExpect(jsonPath("$.createDate").value(matchesPattern(
+					post.createDate.toString().replaceAll("0+$", "") + ".*")))
+                .andExpect(jsonPath("$.modifyDate").value(matchesPattern(
+					post.modifyDate.toString().replaceAll("0+$", "") + ".*")))
                 .andExpect(jsonPath("$.title").value("제목1"))
                 .andExpect(jsonPath("$.content").value("내용1"))
                 .andExpect(jsonPath("$.authorId").value(3))
@@ -149,7 +151,7 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.data.postDto.modifyDate").exists())
                 .andExpect(jsonPath("$.data.postDto.title").value(title))
                 .andExpect(jsonPath("$.data.postDto.content").value(content))
-                .andExpect(jsonPath("$.data.postDto.authorId").value(author.getId()))
+                .andExpect(jsonPath("$.data.postDto.authorId").value(author.id))
                 .andExpect(jsonPath("$.data.postDto.authorName").value(author.getName()));
 
     }
@@ -287,7 +289,7 @@ public class ApiV1PostControllerTest {
                 secretPattern,
                 expireSeconds,
                 Map.of(
-                        "id", author.getId(),
+                        "id", author.id,
                         "username", author.getUsername(),
                         "nickname", author.getNickname()
                 )
