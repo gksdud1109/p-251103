@@ -1,42 +1,37 @@
-package com.back.domain.member.member.service;
+package com.back.domain.member.member.service
 
-import com.back.domain.member.member.entity.Member;
-import com.back.standard.ut.Ut;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.util.Map;
+import com.back.domain.member.member.entity.Member
+import com.back.standard.ut.Ut
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
 
 @Service
-public class AuthTokenService {
+class AuthTokenService {
+    @Value("\${custom.jwt.secretPattern}")
+    private lateinit var secretPattern: String
 
-    @Value("${custom.jwt.secretPattern}")
-    private String secretPattern;
-    @Value("${custom.jwt.expireSeconds}")
-    private long expireSeconds;
+    @Value("\${custom.jwt.expireSeconds}")
+    private val expireSeconds: Long = 0
 
-    String genAccessToken(Member member) {
-
+    fun genAccessToken(member: Member): String {
         return Ut.jwt.toString(
-                secretPattern,
-                expireSeconds,
-			Map.of("id", member.id, "username", member.getUsername(), "nickname", member.getNickname())
-        );
+            secretPattern,
+            expireSeconds,
+            mapOf(
+                "id" to member.id,
+                "username" to member.username,
+                "nickname" to member.nickname
+            )
+        )
     }
 
-    Map<String, Object> payloadOrNull(String jwt) {
-        Map<String, Object> payload = Ut.jwt.payloadOrNull(jwt, secretPattern);
+    fun payloadOrNull(jwt: String): Map<String, Any>? {
+        val payload = Ut.jwt.payloadOrNull(jwt, secretPattern) ?: return null
 
-        if(payload == null) {
-            return null;
-        }
-
-        Number idNo = (Number)payload.get("id");
-        long id = idNo.longValue();
-
-        String username = (String)payload.get("username");
-        String nickname = (String)payload.get("nickname");
-
-       return Map.of("id", id, "username", username, "nickname", nickname);
+        return mapOf(
+            "id" to (payload["id"] as Number).toLong(),
+            "username" to payload["username"] as String,
+            "nickname" to payload["nickname"] as String
+        )
     }
 }

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.AllArgsConstructor
 import lombok.Getter
 
-@AllArgsConstructor
-@Getter
 class RsData<T> @JvmOverloads constructor(
     val resultCode: String,
     val msg: String?,

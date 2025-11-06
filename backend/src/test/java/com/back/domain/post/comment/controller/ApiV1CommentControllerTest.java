@@ -100,7 +100,7 @@ public class ApiV1CommentControllerTest {
 
         long targetPostId = 1;
         String content = "새로운 댓글";
-        Member author = memberRepository.findByUsername("user1").get();
+        Member author = memberRepository.findByUsername("user1");
 
         ResultActions resultActions = mvc
                 .perform(
@@ -136,7 +136,7 @@ public class ApiV1CommentControllerTest {
         long targetCommentId = 1;
         String content = "댓글 내용 수정";
 
-        Member author = memberRepository.findByUsername("user1").get();
+        Member author = memberRepository.findByUsername("user1");
 
         ResultActions resultActions = mvc
                 .perform(
@@ -161,7 +161,7 @@ public class ApiV1CommentControllerTest {
         Post post = postRepository.findById(targetPostId).get();
         Comment comment = post.findCommentById(targetCommentId).get();
 
-        assertThat(comment.getContent()).isEqualTo(content);
+        assertThat(comment.content).isEqualTo(content);
     }
 
     @Test
@@ -171,7 +171,7 @@ public class ApiV1CommentControllerTest {
         long targetCommentId = 1;
         String content = "댓글 내용 수정";
 
-        Member author = memberRepository.findByUsername("user2").get();
+        Member author = memberRepository.findByUsername("user2");
 
         ResultActions resultActions = mvc
                 .perform(
@@ -200,7 +200,7 @@ public class ApiV1CommentControllerTest {
         long targetPostId = 1;
         long targetCommentId = 1;
 
-        Member author = memberRepository.findByUsername("user1").get();
+        Member author = memberRepository.findByUsername("user1");
 
         ResultActions resultActions = mvc
                 .perform(
@@ -229,7 +229,7 @@ public class ApiV1CommentControllerTest {
         long targetPostId = 1;
         long targetCommentId = 1;
 
-        Member author = memberRepository.findByUsername("user2").get();
+        Member author = memberRepository.findByUsername("user2");
 
         ResultActions resultActions = mvc
                 .perform(

@@ -19,7 +19,6 @@ import java.io.IOException
 import java.util.function.Supplier
 
 @Component
-@RequiredArgsConstructor
 class CustomAuthenticationFilter(
     private val memberService: MemberService,
     private val rq: Rq
@@ -116,7 +115,7 @@ class CustomAuthenticationFilter(
         var accessTokenValid = false
 
         if(accessToken.isNotBlank()){
-            val payload = memberService.payloadOrNull(accessToken)
+            val payload = memberService.payload(accessToken)
             if(payload != null){
                 val id = payload["id"] as Long
                 val username =payload["username"] as String
@@ -128,11 +127,11 @@ class CustomAuthenticationFilter(
 
         if(member == null){
             member = memberService.findByApiKey(apiKey)
-                .orElseThrow{ ServiceException("401-3", "API 키가 유효하지 않습니다.") }
+                ?: throw ServiceException("401-3", "API 키가 유효하지 않습니다.")
         }
 
         if (accessToken.isNotBlank() && !accessTokenValid) {
-            val newToken = memberService.genAccessToken(member)
+            val newToken = memberService.genAccessToken(member!!)
             rq.setCookie("accessToken", newToken)
             rq.setHeader("accessToken", newToken)
         }

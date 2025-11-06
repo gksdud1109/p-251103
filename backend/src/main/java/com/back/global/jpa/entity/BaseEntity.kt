@@ -12,8 +12,8 @@ import java.util.Objects
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity(
-    @JvmField
     @Id
+    @JvmField
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 

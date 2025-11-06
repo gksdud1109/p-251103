@@ -1,87 +1,74 @@
-package com.back.domain.member.member.service;
+package com.back.domain.member.member.service
 
-import com.back.domain.member.member.entity.Member;
-import com.back.domain.member.member.repository.MemberRepository;
-import com.back.global.exception.ServiceException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.back.domain.member.member.entity.Member
+import com.back.domain.member.member.repository.MemberRepository
+import com.back.global.exception.ServiceException
+import com.back.standard.extentions.getOrThrow
+import lombok.RequiredArgsConstructor
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
+import java.util.*
+import java.util.function.Consumer
 
 @Service
-@RequiredArgsConstructor
-public class MemberService {
+class MemberService(
+    private val memberRepository: MemberRepository,
+    private val authTokenService: AuthTokenService,
+    private val passwordEncoder: PasswordEncoder
+) {
 
-    private final MemberRepository memberRepository;
-    private final AuthTokenService authTokenService;
-    private final PasswordEncoder passwordEncoder;
-
-    public long count() {
-        return memberRepository.count();
+    fun count(): Long {
+        return memberRepository.count()
     }
 
-    public Member join(String username, String password, String nickname) {
-        return join(username, password, nickname, null);
+    fun join(username: String, password: String, nickname: String): Member {
+        return join(username, password, nickname, null)
     }
 
-    public Member join(String username, String password, String nickname, String profileImgUrl) {
-
-        memberRepository.findByUsername(username)
-                .ifPresent(m -> {
-                    throw new ServiceException("409-1", "이미 사용중인 아이디입니다.");
-                });
-
-        Member member = new Member(username, passwordEncoder.encode(password), nickname, profileImgUrl);
-        return memberRepository.save(member);
-    }
-
-
-
-    public Member modifyOrJoin(String username, String password, String nickname, String profileImgUrl) {
-
-        Member member = memberRepository.findByUsername(username).orElse(null);
-
-        if(member == null) {
-            return join(username, password, nickname, profileImgUrl);
+    fun join(username: String, password: String, nickname: String, profileImgUrl: String?): Member {
+        memberRepository.findByUsername(username)?.let {
+            throw ServiceException("409-1", "이미 사용중인 아이디입니다.")
         }
 
-        member.update(nickname, profileImgUrl);
-
-        return member;
+        val member = Member(username, passwordEncoder.encode(password), nickname, profileImgUrl)
+        return memberRepository.save(member)
     }
 
-    public Optional<Member> findByUsername(String username) {
-        return memberRepository.findByUsername(username);
+
+    fun modifyOrJoin(username: String, password: String, nickname: String, profileImgUrl: String?): Member {
+        return memberRepository.findByUsername(username)
+            ?.apply { update(nickname, profileImgUrl) }
+            ?: join(username, password, nickname, profileImgUrl)
     }
 
-    public Optional<Member> findByApiKey(String apiKey) {
-        return memberRepository.findByApiKey(apiKey);
+    fun findByUsername(username: String): Member? {
+        return memberRepository.findByUsername(username)
     }
 
-    public String genAccessToken(Member member) {
-        return authTokenService.genAccessToken(member);
+    fun findByApiKey(apiKey: String): Member?{
+        return memberRepository.findByApiKey(apiKey)
     }
 
-    public Map<String, Object> payloadOrNull(String accessToken) {
-        return authTokenService.payloadOrNull(accessToken);
+    fun genAccessToken(member: Member): String {
+        return authTokenService.genAccessToken(member)
     }
 
-    public Optional<Member> findById(long id) {
-        return memberRepository.findById(id);
+    fun payload(accessToken: String): Map<String, Any>? {
+        return authTokenService.payloadOrNull(accessToken)
     }
 
-    public List<Member> findAll() {
-        return memberRepository.findAll();
+    fun findById(id: Long): Member? {
+        return memberRepository.findByIdOrNull(id)
     }
 
-    public void checkPassword(String inputPassword, String rawPassword) {
-        if(!passwordEncoder.matches(inputPassword, rawPassword)) {
-            throw new ServiceException("401-2", "비밀번호가 일치하지 않습니다.");
+    fun findAll(): List<Member> {
+        return memberRepository.findAll()
+    }
+
+    fun checkPassword(inputPassword: String, rawPassword: String) {
+        if (!passwordEncoder.matches(inputPassword, rawPassword)) {
+            throw ServiceException("401-2", "비밀번호가 일치하지 않습니다.")
         }
     }
-
 }

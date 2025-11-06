@@ -1,60 +1,58 @@
-package com.back.domain.post.post.service;
+package com.back.domain.post.post.service
 
-import com.back.domain.member.member.entity.Member;
-import com.back.domain.post.comment.entity.Comment;
-import com.back.domain.post.post.entity.Post;
-import com.back.domain.post.post.repository.PostRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import com.back.domain.member.member.entity.Member
+import com.back.domain.post.comment.entity.Comment
+import com.back.domain.post.post.entity.Post
+import com.back.domain.post.post.repository.PostRepository
+import lombok.RequiredArgsConstructor
+import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
-@RequiredArgsConstructor
-public class PostService {
+class PostService (
+    private val postRepository: PostRepository
+) {
 
-    private final PostRepository postRepository;
+    fun write(author: Member, title: String, content: String): Post {
+        val post = Post(author, title, content)
 
-    public Post write(Member author, String title, String content) {
-        Post post = new Post(author, title, content);
-
-        return postRepository.save(post);
+        return postRepository.save(post)
     }
 
-    public long count() {
-        return postRepository.count();
+    fun count(): Long {
+        return postRepository.count()
     }
 
-    public Optional<Post> findById(Long id) {
-        return postRepository.findById(id);
+    // TODO: Optional 제거
+    fun findById(id: Long): Optional<Post> {
+        return postRepository.findById(id)
     }
 
-    public List<Post> findAll() {
-        return postRepository.findAll();
+    fun findAll(): List<Post> {
+        return postRepository.findAll()
     }
 
-    public void modify(Post post, String title, String content) {
-        post.update(title, content);
+    fun modify(post: Post, title: String, content: String) {
+        post.update(title, content)
     }
 
-    public Comment writeComment(Member author, Post post, String content) {
-        return post.addComment(author, content);
+    fun writeComment(author: Member, post: Post, content: String): Comment {
+        return post.addComment(author, content)
     }
 
-    public void deleteComment(Post post, Long commentId) {
-        post.deleteComment(commentId);
+    fun deleteComment(post: Post, commentId: Long) {
+        post.deleteComment(commentId)
     }
 
-    public void modifyComment(Post post, Long commentId, String content) {
-        post.updateComment(commentId, content);
+    fun modifyComment(post: Post, commentId: Long, content: String) {
+        post.updateComment(commentId, content)
     }
 
-    public void delete(Post post) {
-        postRepository.delete(post);
+    fun delete(post: Post) {
+        postRepository.delete(post)
     }
 
-    public void flush() {
-        postRepository.flush();
+    fun flush() {
+        postRepository.flush()
     }
 }

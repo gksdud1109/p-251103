@@ -2,6 +2,7 @@ package com.back.global.initData
 
 import com.back.domain.member.member.service.MemberService
 import com.back.domain.post.post.service.PostService
+import com.back.standard.extentions.getOrThrow
 import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
@@ -50,9 +51,9 @@ class BaseInitData(
             return
         }
 
-        val member1 = memberService.findByUsername("user1").get()
-        val member2 = memberService.findByUsername("user2").get()
-        val member3 = memberService.findByUsername("user3").get()
+        val member1 = memberService.findByUsername("user1").getOrThrow()
+        val member2 = memberService.findByUsername("user2").getOrThrow()
+        val member3 = memberService.findByUsername("user3").getOrThrow()
 
         val post1 = postService.write(member1, "제목1", "내용1")
         val post2 = postService.write(member1, "제목2", "내용2")

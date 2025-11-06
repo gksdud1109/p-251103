@@ -3,12 +3,10 @@ package com.back.domain.member.member.entity
 import com.back.global.jpa.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import lombok.NoArgsConstructor
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.*
 
-@NoArgsConstructor
 @Entity
 class Member(
     id: Long = 0,

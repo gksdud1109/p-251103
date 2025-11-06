@@ -126,7 +126,7 @@ public class ApiV1MemberControllerTest {
                 )
                 .andDo(print());
 
-        Member member = memberRepository.findByUsername(username).get();
+        Member member = memberRepository.findByUsername(username);
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1MemberController.class))
@@ -197,7 +197,7 @@ public class ApiV1MemberControllerTest {
     @Test
     @DisplayName("내 정보")
     void t5() throws Exception {
-        Member actor = memberRepository.findByUsername("user1").get();
+        Member actor = memberRepository.findByUsername("user1");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
@@ -207,7 +207,7 @@ public class ApiV1MemberControllerTest {
                 )
                 .andDo(print());
 
-        Member member = memberRepository.findByUsername("user1").get();
+        Member member = memberRepository.findByUsername("user1");
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1MemberController.class))
@@ -228,7 +228,7 @@ public class ApiV1MemberControllerTest {
     @Test
     @DisplayName("내 정보, 올바른 API KEY, 유효하지 않은 accessToken")
     void t6() throws Exception {
-        Member actor = memberRepository.findByUsername("user1").get();
+        Member actor = memberRepository.findByUsername("user1");
         String actorApiKey = actor.getApiKey();
         String wrongAccessToken = "wrong-access-token";
 

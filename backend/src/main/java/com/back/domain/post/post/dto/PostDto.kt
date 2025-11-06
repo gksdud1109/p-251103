@@ -4,7 +4,6 @@ import com.back.domain.post.post.entity.Post
 import org.springframework.http.RequestEntity.post
 import java.time.LocalDateTime
 
-@JvmRecord
 data class PostDto private constructor(
     val id: Long?,
     val createDate: LocalDateTime?,

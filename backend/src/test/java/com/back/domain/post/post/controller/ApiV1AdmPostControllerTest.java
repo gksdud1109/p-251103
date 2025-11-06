@@ -37,7 +37,7 @@ public class ApiV1AdmPostControllerTest {
     @DisplayName("글 전체 개수 조회, count")
     void t1() throws Exception {
 
-        Member actor = memberRepository.findByUsername("admin").get();
+        Member actor = memberRepository.findByUsername("admin");
 
         ResultActions resultActions = mvc
                 .perform(
@@ -60,7 +60,7 @@ public class ApiV1AdmPostControllerTest {
     @DisplayName("글 전체 개수 조회, count, 권한이 없는 경우")
     void t2() throws Exception {
 
-        Member actor = memberRepository.findByUsername("user1").get();
+        Member actor = memberRepository.findByUsername("user1");
 
         ResultActions resultActions = mvc
                 .perform(
